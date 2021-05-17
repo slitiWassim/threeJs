@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Activités three.js</title>
+       <meta charset="UTF-8"/>
+       <script src="Js/three.min.js" ></script>
+       <script src="Js/gltf.min.js"></script>
+       <script src="Js/OrbitControls.js"></script>
+       
+</head>
+<body >
+</body>
+
+<script >
+
+var renderer,scene,camera,hummer ;
+var SPEED=0.008;
+var light;
+function init(){
+scene=new THREE.Scene();
+camera =new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,1000);
+camera.position.z=10;
+camera.position.x=10;
+camera.position.y=15;
+renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth,window.innerHeight);
+document.body.appendChild(renderer.domElement);
+var orbit=new THREE.OrbitControls(camera,renderer.domElement);
+ light=new THREE.AmbientLight(0x888888);
+scene.add(light);
+ light=new THREE.SpotLight(0xfdfcf0,1);
+light.position.set(20,10,20);
+scene.add(light);
+
+var loader = new THREE.GLTFLoader();
+
+
+// Optional: Provide a DRACOLoader instance to decode compressed mesh data
+//const dracoLoader = new DRACOLoader();
+//dracoLoader.setDecoderPath( '/examples/js/libs/draco/' );
+//loader.setDRACOLoader( dracoLoader );
+
+// Load a glTF resource
+loader.load('Models/hummer/scene.gltf',
+	function ( gltf ) {
+		 // Array<THREE.AnimationClip>
+		hummer=gltf.scene; // THREE.Group
+		camera.lookAt(hummer.position);
+        hummer.scale.set(2.5,2.5,2.5);
+        scene.add(hummer);
+
+	});
+	
+
+
+
+
+
+
+
+
+
+}
+function render(){
+    
+    requestAnimationFrame(render);
+    renderer.render(scene,camera);
+    rotateH();
+}
+
+function rotateH() {
+    hummer.rotation.y += SPEED;
+    
+    
+
+}
+
+
+
+
+init();
+render();
+
+</script>
